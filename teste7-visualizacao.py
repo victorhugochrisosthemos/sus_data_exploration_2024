@@ -31,10 +31,17 @@ st.title("Mapa Interativo de Dados SUS por Município")
 
 # Variáveis obrigatórias
 st.subheader("Variáveis Obrigatórias")
-cid_doenca_selecionada = st.selectbox(
+# Depois (mostra CID + Descrição):
+cid_com_descricao = dados[['cid_doenca', 'DESCRICAO']].drop_duplicates()
+cid_com_descricao['opcoes'] = cid_com_descricao['cid_doenca'] + " - " + cid_com_descricao['DESCRICAO']
+
+cid_selecionado_completo = st.selectbox(
     "Selecione a CID (Doença):",
-    dados['cid_doenca'].unique()
+    cid_com_descricao['opcoes']
 )
+
+# Extrai apenas o CID da seleção (para usar no filtro)
+cid_doenca_selecionada = cid_selecionado_completo.split(" - ")[0]
 
 # Filtra os dados
 dados_filtrados = dados[dados['cid_doenca'] == cid_doenca_selecionada].copy()
@@ -77,6 +84,7 @@ for _, row in dados_filtrados.iterrows():
     <div style="font-family: Arial; max-width: 300px;">
         <h4 style="margin-bottom: 5px;">{row['nome_municipio']}</h4>
         <p style="margin: 2px 0;"><b>CID:</b> {cid_doenca_selecionada}</p>
+        <p style="margin: 2px 0;"><b>Descrição:</b> {row['DESCRICAO']}</p>  <!-- Nova linha -->
     """
     
     # Adiciona cada variável selecionada ao popup
