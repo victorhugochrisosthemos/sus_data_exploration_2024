@@ -6,7 +6,7 @@ from streamlit_folium import st_folium
 # Carregar dados
 @st.cache_data
 def carregar_dados():
-    dados = pd.read_csv("C:/Users/Victor/Desktop/PEGA/python/visualizacoes3/dados_unidos_2024.zip", compression="zip")
+    dados = pd.read_csv("dados_unidos_2024.zip", compression="zip")
     dados.drop(columns=['codigo_municipio_6', 'codigo_municipio_paciente', 'nome_padrao'], inplace=True)
     return dados
 
